@@ -5,6 +5,7 @@ describe Item do
 
   before(:context) do
     @item = Item.new("Generic Item",1.99)
+    @item2 = Item.new("Generic Item", 1.99, 10)
   end
 
   describe "Initialization" do
@@ -16,6 +17,15 @@ describe Item do
     end
     it "is assigned a price" do
       expect(@item.price).to eq(1.99)
+    end
+    it "is assigned a weight" do
+      expect(@item.weight).to eq(0)
+    end
+    it "is assigned a shipping price per oz" do
+      expect(@item.ship_price_per_oz).to eq(1.2)
+    end
+    it "Should set the weight if a third paramater is passed" do
+      expect(@item2.weight).to eq(10)
     end
   end
 
@@ -35,7 +45,12 @@ describe Item do
       expect(@item.description).to eq("")
       @item.description="test"
       expect(@item.description).to eq("test")
-    end    
+    end  
+    it "should be able to get and set weight" do
+      expect(@item.weight).to eq(0)
+      @item.weight = 10
+      expect(@item.weight).to eq(10)
+    end  
   end
 
   describe "Methods" do
@@ -53,7 +68,16 @@ describe Item do
       result = @item.sell 3
       expect(result).to eq(true)
       expect(@item.quantity).to eq(2)
-    end    
+    end   
+    it "should be able to return items" do
+      @item.return 3
+      expect(@item.quantity).to eq(5) 
+    end
+    it "should return a shipping cost" do
+      @item.weight = 10
+      result = @item.ship_price
+      expect(result).to eq(12)
+    end
   end
 
 end
